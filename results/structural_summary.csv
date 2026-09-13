@@ -1,0 +1,3 @@
+dataset,nodes,edges,density,reciprocity,avg_clustering_undirected,weakly_connected_components,strongly_connected_components,largest_wcc_size,largest_wcc_fraction,diameter_largest_wcc,avg_shortest_path_largest_wcc,avg_in_degree,max_in_degree,max_out_degree
+bitcoin_otc,5881,35592,0.0010292571373048454,0.7923128792987189,0.17750449405289517,4,1144,5875,0.9989797653460296,9,3.5710878230065415,6.052031967352491,535,763
+bitcoin_alpha,3783,24186,0.0016904649973936393,0.832051600099231,0.1766290303590772,5,540,3775,0.9978852762357917,10,3.570840431393606,6.393338620142744,398,490

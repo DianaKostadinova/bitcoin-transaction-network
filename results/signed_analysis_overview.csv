@@ -1,0 +1,3 @@
+dataset,total_triangles,triangles_with_neutral_edge,balanced,unbalanced,pct_balanced,pct_unbalanced,phase6_flagged_count,bottom_goodness_compared,overlap_count,overlap_fraction_of_phase6_flagged
+bitcoin_otc,33493,549,28743,4201,87.24805730937348,12.751942690626517,158,158,144,0.9113924050632911
+bitcoin_alpha,22153,476,18565,3112,85.64376989435807,14.356230105641925,51,51,47,0.9215686274509803

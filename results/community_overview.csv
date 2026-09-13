@@ -1,0 +1,3 @@
+dataset,num_communities,modularity,largest_community_size,largest_community_fraction
+bitcoin_otc,18,0.4878988144221462,1256,0.2135691208978065
+bitcoin_alpha,21,0.47065003752417905,922,0.2437219138250066
