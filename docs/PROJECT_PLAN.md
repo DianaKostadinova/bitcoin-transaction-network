@@ -115,6 +115,7 @@ bitcoin-transaction-network/
 - [x] Фаза 6 — аномалии ([src/anomaly_detection.py](../src/anomaly_detection.py))
 - [x] Фаза 7 — финален извештај ([docs/Bitcoin_Transaction_Network_Report.pdf](Bitcoin_Transaction_Network_Report.pdf), [src/generate_report.py](../src/generate_report.py))
 - [x] Фаза 8 — signed-network анализа: Fairness & Goodness + structural balance ([src/signed_network_analysis.py](../src/signed_network_analysis.py))
+- [x] Фаза 9 — Hub prediction (ML): предвидување финална централност од рано однесување ([src/hub_prediction.py](../src/hub_prediction.py))
 
 ## 7. Наоди — Фаза 2 (структурна анализа)
 

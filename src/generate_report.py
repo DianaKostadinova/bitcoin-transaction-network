@@ -517,9 +517,74 @@ body(
     "преку целосно поинаков метод."
 )
 
+# ============================================================ PHASE 9
+story.append(PageBreak())
+h1("8. Hub Prediction: може ли да се предвиди идна централност?")
+body(
+    "<b>Цел:</b> Фаза 5 покажа <i>визуелно</i> дека денешните hub-ови биле "
+    "централни уште од почеток. Оваа фаза го тестира тоа <b>квантитативно</b>: "
+    "гледајќи <u>само</u> во раното однесување на еден јазол (првите 30% од "
+    "хронолошката историја на мрежата), колку добро можеме да го предвидиме "
+    "неговиот <b>финален PageRank</b> — пред да е познато дали ќе стане "
+    "влијателен? Ова е практично корисно: платформа би можела рано да "
+    "детектира идни клучни/ризични актери, наместо да чека тие да пораснат."
+)
+body(
+    "<b>Скрипта:</b> <code>src/hub_prediction.py</code>. Од секој јазол "
+    "присутен до 30%-снапшотот, извлекуваме фичери (in/out-degree на 15% и "
+    "30%, growth помеѓу нив, PageRank, Fairness/Goodness, просечна примена "
+    "оценка) и таргет (PageRank на <u>целосниот</u> граф). Тренирани се "
+    "<b>Linear Regression</b> и <b>Random Forest</b>, споредени со наивен "
+    "baseline (само раниот PageRank, без модел). Тест: случајна 70/30 "
+    "поделба на јазли."
+)
+
+metrics_df = pd.read_csv(RESULTS / "hub_prediction_metrics.csv")
+md = metrics_df.copy()
+for c in ["r2_linear", "r2_rf", "spearman_naive", "spearman_linear", "spearman_rf",
+          "precision_at_50_naive", "precision_at_50_linear", "precision_at_50_rf"]:
+    md[c] = md[c].round(3)
+md = md[["dataset", "n_nodes", "r2_linear", "r2_rf", "spearman_naive",
+          "spearman_linear", "spearman_rf", "precision_at_50_naive",
+          "precision_at_50_linear", "precision_at_50_rf"]]
+md.columns = ["Датасет", "Јазли", "R² (Linear)", "R² (RF)", "Spearman (наивен)",
+              "Spearman (Linear)", "Spearman (RF)", "Precision@50 (наивен)",
+              "Precision@50 (Linear)", "Precision@50 (RF)"]
+df_to_table(md, font_size=6.4)
+story.append(Spacer(1, 10))
+
+for name, label in [("bitcoin_otc", "Bitcoin OTC"), ("bitcoin_alpha", "Bitcoin Alpha")]:
+    add_image(RESULTS / f"hub_prediction_scatter_{name}.png", max_width=4.6 * inch, max_height=4.2 * inch)
+caption("Слика 7-8. Предвиден (Random Forest) наспроти реален финален PageRank "
+        "(log-log). Точките близу дијагоналата = точни предвидувања.")
+
+for name, label in [("bitcoin_otc", "Bitcoin OTC"), ("bitcoin_alpha", "Bitcoin Alpha")]:
+    add_image(RESULTS / f"hub_prediction_feature_importance_{name}.png", max_width=5.4 * inch, max_height=3.4 * inch)
+caption("Слика 9-10. Важност на фичерите (Random Forest). pagerank30 и "
+        "deg30_in доминираат; growth (брзината на раст) придонесува најмалку.")
+
+body(
+    "<b>Наод (контраинтуитивен):</b> Random Forest постигнува подобар R² "
+    "(0.80 / 0.82) од Linear Regression (0.48 / 0.58) — подобро ја погодува "
+    "точната магнитуда на финалниот PageRank. Но за <i>рангирање</i> "
+    "(Spearman, precision@50), наивниот baseline — <b>само раниот PageRank, "
+    "без никаков модел</b> — е исто толку добар или подобар (Spearman 0.90 "
+    "/ 0.92 наспроти 0.88 / 0.89 за Random Forest; precision@50 0.78-0.84 "
+    "за сите три пристапи, слично)."
+)
+body(
+    "<b>Толкување:</b> ова е квантитативна потврда дека влијанието во овие "
+    "мрежи е <b>предодредено многу рано</b> — веројатно rich-get-richer "
+    "динамика на рано-регистрирани market-makers. Комплексен модел не "
+    "додава многу над „погледни кој веќе е важен по 30% од историјата“ — "
+    "самиот тој факт е наодот, не слабост на моделот. Feature importance го "
+    "потврдува истото: <i>апсолутна</i> рана позиција (pagerank30, deg30_in) "
+    "предвидува многу подобро од <i>брзината на раст</i> (growth_in/out)."
+)
+
 # ============================================================ FINAL VERDICT
 story.append(PageBreak())
-h1("8. Финален вердикт и заклучоци")
+h1("9. Финален вердикт и заклучоци")
 
 story.append(Paragraph("Клучни заклучоци", styles["H2"]))
 verdict_points = [
@@ -550,6 +615,12 @@ verdict_points = [
     "групи на bursty-rating настани со сомнителен, координиран образец на "
     "секвенцијални ID-ови во ист ден, што заслужува посебна проверка за sybil "
     "однесување.",
+
+    "<b>Предвидливост:</b> финалната централност на еден јазол може да се "
+    "предвиди со висока точност (Spearman ~0.9) само од неговите први 30% "
+    "интеракции — а веќе самиот ран PageRank е речиси исто толку добар "
+    "предиктор колку и обучен ML модел. Влијанието во мрежата се стекнува "
+    "рано и потоа останува стабилно, наместо постепено да „израснува“.",
 ]
 for p in verdict_points:
     story.append(Paragraph("• " + p, styles["Verdict"]))
